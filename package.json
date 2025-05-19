@@ -3,11 +3,28 @@
   "version": "1.0.0",
   "description": "A stylelint plugin to enforce color formats",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:color": "node --test --import tsx tests/color.test.js",
+    "test:rule": "node --test --import tsx tests/rule.test.js",
+    "format": "prettier --write ."
+  },
+  "lint-staged": {
+    "*.{js,ts,json}": [
+      "prettier --write"
+    ]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.10.0"
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@types/node": "^22.15.19",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
+    "prettier": "^3.5.3",
+    "stylelint": "^16.19.1",
+    "stylelint-test-rule-node": "^0.4.0",
+    "tsx": "^4.19.4"
+  }
 }
