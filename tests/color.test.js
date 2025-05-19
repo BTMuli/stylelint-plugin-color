@@ -4,7 +4,8 @@
  * @since 0.1.0
  */
 import { testRule } from "stylelint-test-rule-node";
-import stylelintPluginColor from "src";
+import stylelintPluginColor from "../src/index.js";
+import { ColorFormatEnum } from "../src/utils/colorCheck.js";
 
 const plugins = [stylelintPluginColor];
 const {
@@ -16,15 +17,60 @@ testRule({
   plugins,
   ruleName,
   config: [true],
-  fix: true,
+  fix: false,
   accept: [
     {
-      code: ".class {}",
-      description: "accept empty rule",
+      code: ".class {color: #66ccffff;}",
+    },
+  ],
+  reject: [
+    {
+      code: ".class {color: red;}",
+      message: messages.rejected(
+        "red",
+        ColorFormatEnum.UNKNOWN,
+        ColorFormatEnum.HEXA,
+      ),
     },
     {
       code: ".class {color: #000;}",
-      description: "accept color",
+      message: messages.rejected(
+        "#000",
+        ColorFormatEnum.HEX,
+        ColorFormatEnum.HEXA,
+      ),
+    },
+    {
+      code: ".class {color: rgb(0, 0, 0);}",
+      message: messages.rejected(
+        "rgb(0, 0, 0)",
+        ColorFormatEnum.RGB,
+        ColorFormatEnum.HEXA,
+      ),
+    },
+    {
+      code: ".class {color: rgb(0 0 0 / 0);}",
+      message: messages.rejected(
+        "rgb(0 0 0 / 0)",
+        ColorFormatEnum.RGBA,
+        ColorFormatEnum.HEXA,
+      ),
+    },
+    {
+      code: ".class {color: rgba(0, 0, 0, 0);}",
+      message: messages.rejected(
+        "rgba(0, 0, 0, 0)",
+        ColorFormatEnum.RGBA,
+        ColorFormatEnum.HEXA,
+      ),
+    },
+    {
+      code: ".class {color: hsl(0, 0%, 0%);}",
+      message: messages.rejected(
+        "hsl(0, 0%, 0%)",
+        ColorFormatEnum.UNKNOWN,
+        ColorFormatEnum.HEXA,
+      ),
     },
   ],
 });

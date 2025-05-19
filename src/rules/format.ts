@@ -5,11 +5,12 @@
  */
 
 import stylelint, { type PostcssResult, type Rule } from "stylelint";
-import { colorCheckType, ColorFormatEnum } from "../utils/colorCheck";
+import { colorCheck, ColorFormatEnum } from "../utils/colorCheck";
 
 const ruleName = "color/format";
 const messages = stylelint.utils.ruleMessages(ruleName, {
-  rejected: (selector) => `不允许使用 ${selector} 颜色格式`,
+  rejected: (color, fmt, target) =>
+    `Invalid color format ${fmt}:${color}, please use ${target}`,
 });
 
 const ruleFunction: Rule = (
@@ -48,15 +49,15 @@ const ruleFunction: Rule = (
         (node: { prop: string }) => node.prop === "color",
       );
       if (!colorNode) return;
-      // 拿到color属性的值
       const colorValue = colorNode.value;
-      const colorType = colorCheckType(colorValue, primary);
-      if (!colorType) {
+      const colorFmt = colorCheck(colorValue);
+      const colorTarget = secondaryOptions ?? ColorFormatEnum.HEXA;
+      if (colorFmt !== colorTarget) {
         stylelint.utils.report({
           ruleName,
           result,
           node: ruleNode,
-          message: messages.rejected(colorValue),
+          message: messages.rejected(colorValue, colorFmt, colorTarget),
         });
       }
     });
