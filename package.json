@@ -1,7 +1,9 @@
 {
   "name": "stylelint-plugin-color",
   "version": "1.0.0",
+  "author": "BTMuli <bt-muli@outlook.com>",
   "description": "A stylelint plugin to enforce color formats",
+  "homepage": "https://github.com/BTMuli/stylelint-plugin-color",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -14,9 +16,13 @@
       "prettier --write"
     ]
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "stylelint",
+    "stylelint-plugin",
+    "stylelint-rule",
+    "color"
+  ],
+  "license": "MIT",
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
     "@types/node": "^22.15.19",
