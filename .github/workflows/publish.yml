@@ -1,6 +1,8 @@
 name: Publish
 
 on:
+  # 手动触发
+  workflow_dispatch:
   push:
     tags:
       - 'v*'
