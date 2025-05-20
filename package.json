@@ -1,5 +1,5 @@
 {
-  "name": "stylelint-plugin-color",
+  "name": "@btmuli/stylelint-plugin-color",
   "version": "0.1.0",
   "packageManager": "pnpm@10.11.0",
   "author": "BTMuli <bt-muli@outlook.com>",
