@@ -13,6 +13,9 @@ Update: 2025-05-19
 
 Stylelint 插件，用于指定项目的颜色格式，**WIP**。
 
+- [x] 支持 `hex`、`hexa`、`rgb`、`rgba` 格式校验
+- [ ] 支持 `stylelint --fix` 自动修复
+
 ## 配置说明
 
 - `format`: 颜色格式，为以下之一：
@@ -20,11 +23,6 @@ Stylelint 插件，用于指定项目的颜色格式，**WIP**。
   - `hexa`: 十六进制格式（带透明度）
   - `rgb`: RGB 格式
   - `rgba`: RGBA 格式
-  - `hsl`: HSL 格式
-  - `hsla`: HSLA 格式
-- `case`: 颜色格式大小写，当 `format` 为 `hex` 或 `hexa` 时有效，为以下之一：
-  - `lower`: 小写
-  - `upper`: 大写
 
 ## 参考
 
