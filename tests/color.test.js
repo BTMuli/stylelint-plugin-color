@@ -7,11 +7,11 @@ import { testRule } from "stylelint-test-rule-node";
 import stylelintPluginColor from "../src/index.js";
 import { ColorFormatEnum } from "../src/utils/colorCheck.js";
 
-const plugins = [stylelintPluginColor];
+const plugins = stylelintPluginColor;
 const {
   ruleName,
   rule: { messages },
-} = stylelintPluginColor;
+} = stylelintPluginColor[0];
 
 testRule({
   plugins,
@@ -26,51 +26,27 @@ testRule({
   reject: [
     {
       code: ".class {color: red;}",
-      message: messages.rejected(
-        "red",
-        ColorFormatEnum.UNKNOWN,
-        ColorFormatEnum.HEXA,
-      ),
+      message: messages.warning("red", ColorFormatEnum.UNKNOWN),
     },
     {
       code: ".class {color: #000;}",
-      message: messages.rejected(
-        "#000",
-        ColorFormatEnum.HEX,
-        ColorFormatEnum.HEXA,
-      ),
+      message: messages.rejected("#000", ColorFormatEnum.HEX, ColorFormatEnum.HEXA),
     },
     {
       code: ".class {color: rgb(0, 0, 0);}",
-      message: messages.rejected(
-        "rgb(0, 0, 0)",
-        ColorFormatEnum.RGB,
-        ColorFormatEnum.HEXA,
-      ),
+      message: messages.rejected("rgb(0, 0, 0)", ColorFormatEnum.RGB, ColorFormatEnum.HEXA),
     },
     {
       code: ".class {color: rgb(0 0 0 / 0);}",
-      message: messages.rejected(
-        "rgb(0 0 0 / 0)",
-        ColorFormatEnum.RGBA,
-        ColorFormatEnum.HEXA,
-      ),
+      message: messages.rejected("rgb(0 0 0 / 0)", ColorFormatEnum.RGBA, ColorFormatEnum.HEXA),
     },
     {
       code: ".class {color: rgba(0, 0, 0, 0);}",
-      message: messages.rejected(
-        "rgba(0, 0, 0, 0)",
-        ColorFormatEnum.RGBA,
-        ColorFormatEnum.HEXA,
-      ),
+      message: messages.rejected("rgba(0, 0, 0, 0)", ColorFormatEnum.RGBA, ColorFormatEnum.HEXA),
     },
     {
       code: ".class {color: hsl(0, 0%, 0%);}",
-      message: messages.rejected(
-        "hsl(0, 0%, 0%)",
-        ColorFormatEnum.UNKNOWN,
-        ColorFormatEnum.HEXA,
-      ),
+      message: messages.warning("hsl(0, 0%, 0%)", ColorFormatEnum.UNKNOWN),
     },
   ],
 });

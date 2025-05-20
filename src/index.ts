@@ -6,4 +6,4 @@
 
 import pluginColorFormat from "./rules/format";
 
-export default pluginColorFormat;
+export default [pluginColorFormat];

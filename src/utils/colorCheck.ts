@@ -51,12 +51,19 @@ export function colorCheck(color: string): ColorFormatEnum {
   return ColorFormatEnum.UNKNOWN;
 }
 
-// export function getColorAlpha(color: string, fmt: ColorFormatEnum): string {
-//   if (![ColorFormatEnum.RGBA, ColorFormatEnum.HEXA].includes(fmt)) return "1";
-//   if (fmt === ColorFormatEnum.HEXA) {
-//
-//   }
-// }
+/**
+ * @description 校验可以通过的未知颜色格式
+ * @since 0.1.0
+ * @param {string} color - 颜色字符串
+ * @returns {boolean} 是否符合格式
+ */
+export function canPassUnknown(color: string): boolean {
+  // var(--color);
+  if (/^var\(--[a-zA-Z0-9-_]+\)$/.test(color)) return true;
+  // v-bind
+  if (/^v-bind\([a-zA-Z0-9-_]+\)$/.test(color)) return true;
+  return false;
+}
 
 /**
  * @description 校验颜色是否符合格式

@@ -5,10 +5,11 @@
  */
 
 import stylelint, { type PostcssResult, type Rule } from "stylelint";
-import { checkColorFormat, colorCheck, ColorFormatEnum } from "../utils/colorCheck";
+import { canPassUnknown, checkColorFormat, colorCheck, ColorFormatEnum } from "../utils/colorCheck";
 
 const ruleName = "color/format";
 const messages = stylelint.utils.ruleMessages(ruleName, {
+  warning: (color, fmt) => `Unknown color format ${fmt}:${color}`,
   rejected: (color, fmt, target) => `Invalid color format ${fmt}:${color}, please use ${target}`,
 });
 const meta = {
@@ -47,7 +48,18 @@ const ruleFunction: Rule = (primary: ColorFormatEnum, secondaryOptions: any, con
       const colorFmt = colorCheck(colorValue);
       const colorTarget = secondaryOptions ?? ColorFormatEnum.HEXA;
       if (checkColorFormat(colorValue, colorFmt, colorTarget)) return;
-      if (context.fix && colorFmt !== ColorFormatEnum.UNKNOWN) {
+      if (colorFmt === ColorFormatEnum.UNKNOWN) {
+        if (canPassUnknown(colorValue)) return;
+        stylelint.utils.report({
+          ruleName,
+          result,
+          node: ruleNode,
+          message: messages.warning(colorValue, colorFmt),
+          severity: "warning",
+        });
+        return;
+      }
+      if (context.fix) {
         // TODO: 颜色格式转换
         return;
       }

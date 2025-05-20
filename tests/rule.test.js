@@ -7,8 +7,8 @@
 import { testRuleConfigs } from "stylelint-test-rule-node";
 import stylelintPluginColor from "../src/index";
 
-const plugins = [stylelintPluginColor];
-const { ruleName } = stylelintPluginColor;
+const plugins = stylelintPluginColor;
+const { ruleName } = stylelintPluginColor[0];
 
 testRuleConfigs({
   plugins,
