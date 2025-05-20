@@ -42,10 +42,7 @@ export function colorCheck(color: string): ColorFormatEnum {
       return key as ColorFormatEnum;
     }
   }
-  // rgb(0 0 0 / 0%)
-  if (
-    /^(rgb|RGB)\(\s*(\d{1,3}\s+){2}(\d|1\d|2[0-5]{2})\s*\/\s*(\d{1,3}\s+)?\d{1,3}\s*\)$/.test(color)
-  ) {
+  if (/^rgb\(\s*(\d{1,3})\s*(\d{1,3})\s*(\d{1,3})\s*\/\s*(\d*\.?\d+%?)\s*\)$/.test(color)) {
     return ColorFormatEnum.RGBA;
   }
   return ColorFormatEnum.UNKNOWN;
@@ -58,10 +55,12 @@ export function colorCheck(color: string): ColorFormatEnum {
  * @returns {boolean} 是否符合格式
  */
 export function canPassUnknown(color: string): boolean {
+  const descList = ["currentcolor", "transparent", "inherit", "initial", "unset"];
+  if (descList.includes(color)) return true;
   // var(--color);
   if (/^var\(--[a-zA-Z0-9-_]+\)$/.test(color)) return true;
   // v-bind
-  if (/^v-bind\([a-zA-Z0-9-_]+\)$/.test(color)) return true;
+  if (/^v-bind\(.*\)$/.test(color)) return true;
   return false;
 }
 

@@ -42,7 +42,9 @@ const ruleFunction: Rule = (primary: ColorFormatEnum, secondaryOptions: any, con
 
     root.walkRules((ruleNode) => {
       // 拿到color属性
-      const colorNode = ruleNode.nodes.find((node: { prop: string }) => node.prop === "color");
+      const colorNode = ruleNode.nodes.find((node: { prop: string }) =>
+        node?.prop?.includes("color"),
+      );
       if (!colorNode) return;
       const colorValue = colorNode.value;
       const colorFmt = colorCheck(colorValue);
