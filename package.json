@@ -2,6 +2,9 @@
   "name": "@btmuli/stylelint-plugin-color",
   "version": "0.1.0",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "packageManager": "pnpm@10.11.0",
   "author": "BTMuli <bt-muli@outlook.com>",
   "description": "A stylelint plugin to enforce color formats",
