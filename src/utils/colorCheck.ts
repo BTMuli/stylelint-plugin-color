@@ -35,8 +35,7 @@ export function colorCheck(color: string): ColorFormatEnum {
     [ColorFormatEnum.HEX]: /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/,
     [ColorFormatEnum.HEXA]: /^#[0-9a-fA-F]{8}$/,
     [ColorFormatEnum.RGB]: /^(rgb|RGB)\(\s*(\d{1,3}\s*,\s*){2}\d{1,3}\s*\)$/,
-    [ColorFormatEnum.RGBA]:
-      /^(rgba|RGBA)\(\s*(\d{1,3}\s*,\s*){3}(\d|1\d|2[0-5]{2})\s*\)$/,
+    [ColorFormatEnum.RGBA]: /^(rgba|RGBA)\(\s*(\d{1,3}\s*,\s*){3}(\d|1\d|2[0-5]{2})\s*\)$/,
   };
   for (const key in reg) {
     if (reg[key as keyof typeof reg].test(color)) {
@@ -45,11 +44,51 @@ export function colorCheck(color: string): ColorFormatEnum {
   }
   // rgb(0 0 0 / 0%)
   if (
-    /^(rgb|RGB)\(\s*(\d{1,3}\s+){2}(\d|1\d|2[0-5]{2})\s*\/\s*(\d{1,3}\s+)?\d{1,3}\s*\)$/.test(
-      color,
-    )
+    /^(rgb|RGB)\(\s*(\d{1,3}\s+){2}(\d|1\d|2[0-5]{2})\s*\/\s*(\d{1,3}\s+)?\d{1,3}\s*\)$/.test(color)
   ) {
     return ColorFormatEnum.RGBA;
   }
   return ColorFormatEnum.UNKNOWN;
+}
+
+// export function getColorAlpha(color: string, fmt: ColorFormatEnum): string {
+//   if (![ColorFormatEnum.RGBA, ColorFormatEnum.HEXA].includes(fmt)) return "1";
+//   if (fmt === ColorFormatEnum.HEXA) {
+//
+//   }
+// }
+
+/**
+ * @description 校验颜色是否符合格式
+ * @since 0.1.0
+ * @param {string} color - 颜色字符串
+ * @param {ColorFormatEnum} fmt - 颜色格式枚举
+ * @param {ColorFormatEnum} target - 目标颜色格式枚举
+ * @returns {boolean} 是否符合格式
+ */
+export function checkColorFormat(
+  color: string,
+  fmt: ColorFormatEnum,
+  target: ColorFormatEnum,
+): boolean {
+  // 如果fmt和target相同，直接返回true
+  if (fmt === target) return true;
+  // 如果目标格式是hex，当前格式是hexa，且最后面不是ff，返回true
+  if (target === ColorFormatEnum.HEX && fmt === ColorFormatEnum.HEXA) {
+    return color.slice(-2).toLowerCase() === "ff";
+  }
+  // 如果目标格式是rgb，当前格式是rgba
+  if (target === ColorFormatEnum.RGBA && fmt === ColorFormatEnum.RGB) {
+    const alpha = color.match(/\/\s*(\d{1,3}\s+)?\d{1,3}\s*\)/);
+    if (alpha) {
+      const alphaValue = alpha[0].match(/(\d{1,3}\s+)?\d{1,3}/);
+      if (alphaValue) {
+        const value = parseFloat(alphaValue[0]);
+        // 如果透明度不等于1，返回true
+        if (value !== 1) return true;
+      }
+    }
+  }
+  // 返回false
+  return false;
 }

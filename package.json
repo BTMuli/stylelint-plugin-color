@@ -4,11 +4,12 @@
   "author": "BTMuli <bt-muli@outlook.com>",
   "description": "A stylelint plugin to enforce color formats",
   "homepage": "https://github.com/BTMuli/stylelint-plugin-color",
-  "main": "index.js",
+  "main": "dist/index.cjs",
   "type": "module",
   "scripts": {
     "test:color": "node --test --import tsx tests/color.test.js",
     "test:rule": "node --test --import tsx tests/rule.test.js",
+    "build": "tsup src/index.ts --format cjs,esm --dts --sourcemap --external stylelint --out-dir dist",
     "format": "prettier --write ."
   },
   "lint-staged": {
@@ -31,6 +32,7 @@
     "prettier": "^3.5.3",
     "stylelint": "^16.19.1",
     "stylelint-test-rule-node": "^0.4.0",
+    "tsup": "^8.5.0",
     "tsx": "^4.19.4"
   }
 }

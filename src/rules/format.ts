@@ -5,23 +5,19 @@
  */
 
 import stylelint, { type PostcssResult, type Rule } from "stylelint";
-import { colorCheck, ColorFormatEnum } from "../utils/colorCheck";
+import { checkColorFormat, colorCheck, ColorFormatEnum } from "../utils/colorCheck";
 
 const ruleName = "color/format";
 const messages = stylelint.utils.ruleMessages(ruleName, {
-  rejected: (color, fmt, target) =>
-    `Invalid color format ${fmt}:${color}, please use ${target}`,
+  rejected: (color, fmt, target) => `Invalid color format ${fmt}:${color}, please use ${target}`,
 });
+const meta = {
+  url: "https://github.com/BTMuli/stylelint-plugin-color/blob/main/README.md",
+  fixable: false,
+};
 
-const ruleFunction: Rule = (
-  primary: ColorFormatEnum,
-  secondaryOptions: any,
-  context: any,
-) => {
-  return (
-    root: { walkRules: (arg0: (ruleNode: any) => void) => void },
-    result: PostcssResult,
-  ) => {
+const ruleFunction: Rule = (primary: ColorFormatEnum, secondaryOptions: any, context: any) => {
+  return (root: { walkRules: (arg0: (ruleNode: any) => void) => void }, result: PostcssResult) => {
     const validOptions = stylelint.utils.validateOptions(
       result,
       ruleName,
@@ -45,27 +41,29 @@ const ruleFunction: Rule = (
 
     root.walkRules((ruleNode) => {
       // 拿到color属性
-      const colorNode = ruleNode.nodes.find(
-        (node: { prop: string }) => node.prop === "color",
-      );
+      const colorNode = ruleNode.nodes.find((node: { prop: string }) => node.prop === "color");
       if (!colorNode) return;
       const colorValue = colorNode.value;
       const colorFmt = colorCheck(colorValue);
       const colorTarget = secondaryOptions ?? ColorFormatEnum.HEXA;
-      if (colorFmt !== colorTarget) {
-        stylelint.utils.report({
-          ruleName,
-          result,
-          node: ruleNode,
-          message: messages.rejected(colorValue, colorFmt, colorTarget),
-        });
+      if (checkColorFormat(colorValue, colorFmt, colorTarget)) return;
+      if (context.fix && colorFmt !== ColorFormatEnum.UNKNOWN) {
+        // TODO: 颜色格式转换
+        return;
       }
+      stylelint.utils.report({
+        ruleName,
+        result,
+        node: ruleNode,
+        message: messages.rejected(colorValue, colorFmt, colorTarget),
+      });
     });
   };
 };
 
 ruleFunction.ruleName = ruleName;
 ruleFunction.messages = messages;
+ruleFunction.meta = meta;
 
 const pluginColorFormat = stylelint.createPlugin(ruleName, ruleFunction);
 
