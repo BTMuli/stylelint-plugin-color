@@ -1,6 +1,6 @@
 {
   "name": "stylelint-plugin-color",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "packageManager": "pnpm@10.11.0",
   "author": "BTMuli <bt-muli@outlook.com>",
   "description": "A stylelint plugin to enforce color formats",
@@ -25,6 +25,11 @@
     "stylelint-plugin",
     "stylelint-rule",
     "color"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "devDependencies": {
     "@types/node": "^22.15.19",
